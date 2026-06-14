@@ -1,5 +1,5 @@
 // Import packages onto app
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
@@ -12,6 +12,8 @@ dotenv.config();
 
 // Import routes from the ./routes
 import user from "@/routes/user-route";
+import appointment from "@/routes/appointment-route";
+import { errorResponse } from "@/middleware/error-middleware";
 
 // Setup constant variables
 const PORT = process.env.PORT || 5000;
@@ -47,6 +49,11 @@ app.use(hpp());
 
 // Setup routing
 app.use("/users", user);
+app.use("/appointments", appointment);
+
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) =>
+  errorResponse(err as any, req, res, next),
+);
 
 // Listen to specified port in .env or default 5000
 app.listen(PORT, () => {

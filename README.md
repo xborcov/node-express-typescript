@@ -1,104 +1,89 @@
 # node-express-typescript
-Basic starter project for any project using Node.js + Express.js + TypeScript. Personally, I'd recommend for small to medium projects, as the imagine with a bigger project, you would need extra folders or structure. However, this template should be malleable enough for a good starting template for most personal projects.
+
+This repository is a starter template for building a small-to-medium Node.js API with Express and TypeScript. It is designed for fast local development, with TypeScript support, Jest tests, production build output, and basic security middleware already configured.
+
+## What changed
+
+- Updated `.gitignore` to ignore local-only and sensitive files before pushing to GitHub.
+- Added ignore rules for `.vscode`, `.scannerwork`, `coverage`, and other temporary artifacts.
+- Kept the project focused on source files in `src/`, build output in `dist/`, and safe environment configuration via `.env`.
+
+## Purpose
+
+Use this project as a clean TypeScript + Express starter for APIs and backend services. It includes:
+
+- Express server bootstrapped in `src/app.ts`
+- Middleware for security, CORS, rate limiting, and error handling
+- TypeScript compile and production build support
+- Jest test setup for TypeScript
+- Path aliasing for cleaner imports
+- Local dev workflow with `nodemon`
 
 ## Features
-Most of the useful features are for easier configuration, although there are some other packages setup to make it easier for you to start your project without worrying about installing them.
 
-- TypeScript Support
-- Test-ready with Jest configured with TypeScript
-- Async Handling with error handling if error is thrown
-- Flexible for any database or ORMs
-- Path aliases for cleaner imports
-- Nodemon for refresh on save
-- Setup build script for production; no ts-node for production
-- Security middlewares setup
-- Environment variables configured on load
+- TypeScript support
+- Jest testing ready
+- Error-handling middleware with async route support
+- Security middleware: `helmet`, `hpp`, CORS, rate limiting
+- Environment variables loaded using `dotenv`
+- Build output compiled to `dist/` for production
+- Local-only files excluded from version control via `.gitignore`
 
-# Setup
+## Setup
 
-## Environment Variables
+### Environment Variables
 
-1. Copy ```.env.example```, and rename to ```.env```
-2. Configure newly copied ```.env``` file 
+1. Copy `.env.example` to `.env`
+2. Update `.env` with your local values
 
-## Development
-> This project was setup using Node.js v18.5. Please use specified version for best experience.
+### Development
 
-1. Use this project as a template
-2. Install dependencies with ```npm install```
-3. Start developoment server with ```npm run dev```
+1. Install dependencies: `npm install`
+2. Start the dev server: `npm run dev`
 
-## Production
-Production build is compiled first into JavaScript, built on the ```./dist``` folder, and can be ran after compilation.
+### Production
 
-1. Run ```npm run build```
-2. Run ```npm run start```
+1. Compile TypeScript: `npm run build`
+2. Run the compiled app: `npm run start`
 
-# Project
-Every development files are located within the ```./src``` folder. 
+### Commands
 
-```
-├── app.ts
-├── config
-│   └── db.ts
-├── controllers
-│   └── user-controller.ts
-├── middleware
-│   ├── async-middleware.ts
-│   ├── auth-middleware.ts
-│   └── error-middleware.ts
-├── routes
-│   └── user-route.ts
-├── __tests__
-│   └── example.test.ts
-├── types
-│   ├── enums
-│   │   └── enums.common.ts
-│   ├── interfaces
-│   │   └── interfaces.common.ts
-│   └── types
-│   │   └──  types.common.ts
-│   └── index.d.ts
-└── utils
-    ├── ApiError.ts
-    └── ApiSucess.ts
+- Run tests: `npm test-coverage`
+- Run SonarQube scan: `sonar-scanner -Dsonar.token=<YOUR_TOKEN>`
+
+### Docker Compose
+
+This repository does not currently include a `docker-compose.yml` file. If you add one, start the stack with:
+
+```bash
+docker compose up
 ```
 
-## Important helper functions
+## Project structure
 
-### asyncHandler
-Passing middleware into the asyncHandler will allow the server to automatically catch any internal server errors, or manually thrown errors from the server. 
-```js
-// ? asyncHandler should be used for every request for easy async handling
-export const getUsers = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    // Example user, get from database
-    const user = [{ name: "John Doe" }, { name: "Jaen Doe" }];
+Source code lives under `src/`:
 
-    // Return json with success message
-    res.status(200).json(new ApiSuccess<User[]>(user, "Success!"));
-  },
-);
-```
+- `app.ts` — Express app entrypoint
+- `config/` — DB and environment configuration
+- `controllers/` — route handlers
+- `middleware/` — middleware utilities and error handling
+- `routes/` — Express routers
+- `services/` — service layer logic
+- `types/` — shared TypeScript types
+- `utils/` — helper classes like `ApiError` and `ApiSuccess`
+- `__tests__/` — example Jest tests
 
-## ApiError & ApiSucccess
-Using ApiError or ApiSuccess allows for consistent responses across all routes; please use this instead of passing your own data structure. 
+## GitHub-safe files
 
-### ApiError
-```js
- throw new ApiError({}, 500, "Handled by asyncHandler")
-```
+This repository ignores:
 
-### ApiSuccess
-```js
- res.status(200).json(new ApiSuccess<User[]>(user, "Success!"));
-```
+- `node_modules/`
+- `.env`
+- `dist/`
+- `coverage/`
+- `.vscode/`
+- `.scannerwork/`
+- OS/editor temp files like `.DS_Store`, `npm-debug.log*`, and `yarn-error.log*`
 
-## Adding extra path aliases
-If you add extra folders to this template and would like to use them with aliases, then go through following:
-
-1. Go into ```tsconfig.json```
-2. Add extra paths inside of ```{ paths: ... }``` (for tsconfig-paths)
-3. Go into ```package.json```
-4. Add extra paths inside of ```{_moduleAliases: ... }``` (for production build)
+> These files should remain local and are not safe or useful to commit to GitHub.
 

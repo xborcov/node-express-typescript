@@ -6,6 +6,7 @@
   "scripts": {
     "status": "tsc --p tsconfig.json --listFiles",
     "test": "jest",
+    "test-coverage": "npm test -- --coverage --runInBand",
     "start": "node -r module-alias/register ./dist/app.js",
     "build": "tsc -p ./tsconfig.prod.json",
     "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node -r tsconfig-paths/register src/app.ts"
@@ -15,6 +16,7 @@
     "@/data": "dist/data",
     "@/middleware": "dist/middleware",
     "@/controllers": "dist/controllers",
+    "@/services": "dist/services",
     "@/db": "dist/db",
     "@/utils": "dist/utils"
   },

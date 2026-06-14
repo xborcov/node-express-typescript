@@ -1,8 +1,12 @@
-import { NextFunction } from "connect";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+import { ApiError } from "@/utils/ApiError";
 
-// @desc Authenticates user and protects routes
+const API_TOKEN = process.env.API_TOKEN || "Bearer secret-token";
 
 export const verify = (req: Request, res: Response, next: NextFunction) => {
+  const auth = req.headers.authorization;
+  if (!auth || auth !== API_TOKEN) {
+    throw new ApiError({}, 401, "Unauthorized access. A valid API token is required.");
+  }
   next();
 };

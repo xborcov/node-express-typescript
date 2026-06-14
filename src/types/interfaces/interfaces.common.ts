@@ -6,7 +6,16 @@ export interface ApiError extends Error {
   data: [] | {};
 }
 
-// Example User interface
 export interface User {
+  id: string;
   name: string;
+  email: string;
+  role: "user" | "admin";
+}
+
+export interface Appointment {
+  id: string;
+  userId: string;
+  date: string;
+  reason: string;
 }
