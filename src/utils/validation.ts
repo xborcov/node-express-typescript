@@ -13,7 +13,7 @@ export const validateUserPayload = (payload: CreateUserPayload) => {
     throw new ApiError({}, 400, "User name must contain at least 2 characters.");
   }
 
-  if (!payload.email || typeof payload.email !== "string" || !emailPattern.test(payload.email)) {
+  if (!payload.email || typeof payload.email !== "string" || !emailPattern.exec(payload.email)) {
     throw new ApiError({}, 400, "A valid email address is required.");
   }
 };
