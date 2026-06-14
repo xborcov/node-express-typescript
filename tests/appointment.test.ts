@@ -327,6 +327,8 @@ describe("AppointmentService", () => {
   });
 });
 
+import { validateAppointmentRequestPayload } from "@/utils/request-validation";
+
 describe("validateAppointmentPayload", () => {
   it("throws when the date is invalid", () => {
     expect(() => {
@@ -343,6 +345,38 @@ describe("validateAppointmentPayload", () => {
   it("accepts a valid appointment payload", () => {
     expect(() => {
       validateAppointmentPayload({ userId: "u1", date: new Date(Date.now() + 3600000).toISOString(), reason: "Consultation" });
+    }).not.toThrow();
+  });
+});
+
+describe("validateAppointmentRequestPayload", () => {
+  it("throws when userId is missing", () => {
+    expect(() => {
+      validateAppointmentRequestPayload({ date: new Date(Date.now() + 3600000).toISOString(), reason: "Consultation" });
+    }).toThrow("Appointment userId is required.");
+  });
+
+  it("throws when userId format is invalid", () => {
+    expect(() => {
+      validateAppointmentRequestPayload({ userId: "user", date: new Date(Date.now() + 3600000).toISOString(), reason: "Consultation" });
+    }).toThrow("Appointment userId must be a valid user identifier.");
+  });
+
+  it("throws when a bad email is provided", () => {
+    expect(() => {
+      validateAppointmentRequestPayload({ userId: "u1", date: new Date(Date.now() + 3600000).toISOString(), reason: "Consultation", email: "invalid" });
+    }).toThrow("A valid email address is required.");
+  });
+
+  it("accepts a valid appointment request payload", () => {
+    expect(() => {
+      validateAppointmentRequestPayload({
+        userId: "u1",
+        date: new Date(Date.now() + 3600000).toISOString(),
+        reason: "Consultation",
+        email: "user@example.com",
+        notes: "Bring referral notes",
+      });
     }).not.toThrow();
   });
 });

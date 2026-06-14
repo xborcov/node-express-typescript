@@ -1,5 +1,6 @@
 import { UserService } from "@/services/user-service";
 import { validateUserPayload } from "@/utils/validation";
+import { validateUserRequestPayload } from "@/utils/request-validation";
 import { ApiError } from "@/utils/ApiError";
 
 describe("UserService", () => {
@@ -44,6 +45,26 @@ describe("validateUserPayload", () => {
   it("accepts a valid payload", () => {
     expect(() => {
       validateUserPayload({ name: "Alice Smith", email: "alice@example.com" });
+    }).not.toThrow();
+  });
+});
+
+describe("validateUserRequestPayload", () => {
+  it("throws when the name is missing", () => {
+    expect(() => {
+      validateUserRequestPayload({ email: "alice@example.com" });
+    }).toThrow("User name must contain at least 2 characters.");
+  });
+
+  it("throws when the role is invalid", () => {
+    expect(() => {
+      validateUserRequestPayload({ name: "Alice", email: "alice@example.com", role: "invalid" });
+    }).toThrow("User role must be 'user' or 'admin'.");
+  });
+
+  it("accepts a valid user request payload", () => {
+    expect(() => {
+      validateUserRequestPayload({ name: "Alice", email: "alice@example.com", role: "admin", notes: "Premium user" });
     }).not.toThrow();
   });
 });
