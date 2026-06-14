@@ -1,4 +1,4 @@
-import { AppointmentService, AppointmentAssessmentRequest, assessAppointmentRequest } from "@/services/appointment-service";
+import { AppointmentService, assessAppointmentRequest } from "@/services/appointment-service";
 import { UserService } from "@/services/user-service";
 import { validateAppointmentPayload } from "@/utils/validation";
 import { validateAppointmentRequestPayload } from "@/utils/request-validation";

@@ -1,7 +1,6 @@
 import { UserService } from "@/services/user-service";
 import { validateUserPayload } from "@/utils/validation";
 import { validateUserRequestPayload } from "@/utils/request-validation";
-import { ApiError } from "@/utils/ApiError";
 
 describe("UserService", () => {
   it("returns the default users", () => {
