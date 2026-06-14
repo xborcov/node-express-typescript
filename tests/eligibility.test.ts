@@ -1,13 +1,28 @@
 import { canBookStandardAppointment } from "@/services/eligibility-service";
 
 describe("canBookStandardAppointment", () => {
-  it("returns true when all eligibility conditions are satisfied", () => {
-    const input = { age: 30, hasInsurance: true, isBlocked: false };
-    expect(canBookStandardAppointment(input)).toBe(true);
+  describe("Base eligibility case", () => {
+    it("returns true for the base eligible case", () => {
+      const input = { age: 18, hasInsurance: true, isBlocked: false };
+      expect(canBookStandardAppointment(input)).toBe(true);
+    });
   });
 
-  it("returns false when user is underage", () => {
-    const input = { age: 17, hasInsurance: true, isBlocked: false };
-    expect(canBookStandardAppointment(input)).toBe(false);
+  describe("Condition independence tests", () => {
+    it("age condition independently changes the decision", () => {
+      const input = { age: 17, hasInsurance: true, isBlocked: false };
+      expect(canBookStandardAppointment(input)).toBe(false);
+    });
+
+    it("insurance condition independently changes the decision", () => {
+      const input = { age: 18, hasInsurance: false, isBlocked: false };
+      expect(canBookStandardAppointment(input)).toBe(false);
+    });
+
+    it("blocked condition independently changes the decision", () => {
+      const input = { age: 18, hasInsurance: true, isBlocked: true };
+      expect(canBookStandardAppointment(input)).toBe(false);
+    });
   });
 });
+
